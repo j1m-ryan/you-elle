@@ -5,6 +5,19 @@ const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const inquirer = require("inquirer");
 const chalk = require("chalk");
+const FormData = require("form-data");
+const Table = require("cli-table");
+const table = new Table({
+  head: [
+    "",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ],
+});
 
 https
   .get("https://www.timetable.ul.ie/UA/CourseTimetable.aspx", (resp) => {
@@ -15,6 +28,11 @@ https
     resp.on("end", () => {
       const dom = new JSDOM(data);
       const options = dom.window.document.getElementsByTagName("option");
+      const inputs = dom.window.document.getElementsByTagName("input");
+      const state = inputs.item(0).value;
+
+      const generator = inputs.item(1).value;
+      const validation = inputs.item(2).value;
       const courses = [];
       for (let i = 7; i < options.length; i++) {
         courses.push(options[i].textContent);
@@ -34,38 +52,55 @@ https
         },
       ];
       inquirer.prompt(questions).then((answers) => {
-        console.log(answers);
-      });
+        const form = new FormData();
+        form.append("__EVENTTARGET", "ctl00$HeaderContent$CourseDropdown");
+        form.append("__VIEWSTATE", state);
+        form.append("__VIEWSTATEGENERATOR", generator);
+        form.append("__EVENTVALIDATION", validation);
+        form.append("ctl00$HeaderContent$CourseYearDropdown", answers["year"]);
+        const start = answers["course"].length - 6;
+        const end = answers["course"].length - 1;
+        const courseCode = answers["course"].substring(start, end);
+        form.append("ctl00$HeaderContent$CourseDropdown", courseCode);
+        form.submit(
+          "https://www.timetable.ul.ie/UA/CourseTimetable.aspx",
+          (err, res) => {
+            let newData = "";
+            res.on("data", (d) => {
+              newData += d;
+            });
 
-      /* for (let i = 7; i < options.length; i++) {
-        console.log(options[i].textContent);
-      } */
+            res.on("end", () => {
+              const dom2 = new JSDOM(newData);
+              const tds = dom2.window.document.getElementsByTagName("td");
+
+              const toPushToTable = [
+                {
+                  "9:00": [
+                    "Mathihlsfd ljksfdjlkfds jpisfdjlfdsjli dsfuhofdsjuoifdsjlifds uhoiufdsukhfdsjulkhs",
+                    "Value Row 1 Col 2",
+                  ],
+                },
+                { "10:00": ["Value Row 2 Col 1", "Value Row 2 Col 2"] },
+                { "11:00": ["Value Row 2 Col 1", "Value Row 2 Col 2"] },
+                { "12:00": ["Value Row 2 Col 1", "Value Row 2 Col 2"] },
+                { "13:00": ["Value Row 2 Col 1", "Value Row 2 Col 2"] },
+                { "14:00": ["Value Row 2 Col 1", "Value Row 2 Col 2"] },
+                { "15:00": ["Value Row 2 Col 1", "Value Row 2 Col 2"] },
+                { "16:00": ["Value Row 2 Col 1", "Value Row 2 Col 2"] },
+                { "17:00": ["Value Row 2 Col 1", "Value Row 2 Col 2"] },
+              ];
+              for (row of toPushToTable) {
+                table.push(row);
+              }
+              console.log(table.toString());
+            });
+          }
+        );
+      });
     });
   })
   .on("error", (err) => {
     console.log("Error: " + err.message);
   });
-console.log(chalk.green("Welcome to you-elle, the UL timetable cli"));
-
-/* if (process.argv.length < 4) {
-  console.log("Please specify a year and a course");
-  console.log("Example usage: $ you-elle 1 LM121");
-} else if (process.argv.length == 4) {
-  const year = process.argv[2];
-  const course = process.argv[3];
-  if (!isInteger(year) || year > 4 || year < 1) {
-    console.log("Enter a valid year between 1 and 4");
-    process.exit(1);
-  } else if (course.length >= 5) {
-    console.log("Enter a valid course");
-    process.exit(1);
-  }
-  console.log(`Your year is ${year} and your course is ${course}`);
-} else {
-  console.log("Too many arguments");
-}
-
-function isInteger(value) {
-  return /^\d+$/.test(value);
-}
- */
+console.log(chalk.green("Welcome to you-elle, the UL course timetable cli"));
