@@ -22,5 +22,11 @@
   "bin": {
     "you-elle": "./index.js"
   },
-  "homepage": "https://github.com/J1M-RYAN/you-elle#readme"
+  "homepage": "https://github.com/J1M-RYAN/you-elle#readme",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "commander": "^6.0.0",
+    "inquirer": "^7.3.3",
+    "jsdom": "^16.3.0"
+  }
 }
