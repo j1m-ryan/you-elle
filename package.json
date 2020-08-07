@@ -1,0 +1,26 @@
+{
+  "name": "you-elle",
+  "version": "1.0.0",
+  "description": "A cli for UL timetables",
+  "main": "bin/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/J1M-RYAN/you-elle.git"
+  },
+  "keywords": [
+    "Timetable",
+    "Limerick"
+  ],
+  "author": "Jim Ryan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/J1M-RYAN/you-elle/issues"
+  },
+  "bin": {
+    "you-elle": "./index.js"
+  },
+  "homepage": "https://github.com/J1M-RYAN/you-elle#readme"
+}
