@@ -30,5 +30,8 @@
     "form-data": "^3.0.0",
     "inquirer": "^7.3.3",
     "jsdom": "^16.3.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   }
 }
