@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 const https = require("https");
-const { program, option } = require("commander");
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const inquirer = require("inquirer");
 const chalk = require("chalk");
 const FormData = require("form-data");
+const CFonts = require("cfonts");
 const Table = require("cli-table");
 const table = new Table({
   head: [
@@ -73,23 +73,49 @@ https
             res.on("end", () => {
               const dom2 = new JSDOM(newData);
               const tds = dom2.window.document.getElementsByTagName("td");
-
               const toPushToTable = [
                 {
-                  "9:00": [
-                    "Mathihlsfd ljksfdjlkfds jpisfdjlfdsjli dsfuhofdsjuoifdsjlifds uhoiufdsukhfdsjulkhs",
-                    "Value Row 1 Col 2",
-                  ],
+                  "09:00": [],
                 },
-                { "10:00": ["Value Row 2 Col 1", "Value Row 2 Col 2"] },
-                { "11:00": ["Value Row 2 Col 1", "Value Row 2 Col 2"] },
-                { "12:00": ["Value Row 2 Col 1", "Value Row 2 Col 2"] },
-                { "13:00": ["Value Row 2 Col 1", "Value Row 2 Col 2"] },
-                { "14:00": ["Value Row 2 Col 1", "Value Row 2 Col 2"] },
-                { "15:00": ["Value Row 2 Col 1", "Value Row 2 Col 2"] },
-                { "16:00": ["Value Row 2 Col 1", "Value Row 2 Col 2"] },
-                { "17:00": ["Value Row 2 Col 1", "Value Row 2 Col 2"] },
+                { "10:00": [] },
+                { "11:00": [] },
+                { "12:00": [] },
+                { "13:00": [] },
+                { "14:00": [] },
+                { "15:00": [] },
+                { "16:00": [] },
+                { "17:00": [] },
+                { "18:00": [] },
+                { "19:00": [] },
+                { "20:00": [] },
+                { "21:00": [] },
+                { "22:00": [] },
               ];
+              const times = [
+                "09:00",
+                "10:00",
+                "11:00",
+                "12:00",
+                "13:00",
+                "14:00",
+                "15:00",
+                "16:00",
+                "17:00",
+                "18:00",
+                "19:00",
+                "20:00",
+                "21:00",
+                "22:00",
+              ];
+              for (let y = 0; y < tds.length; y += 6) {
+                for (let j = y; j < y + 6; j++) {
+                  const index = Math.floor(y / 12);
+                  toPushToTable[index][times[index]].push(
+                    formatTableData(tds[j].textContent)
+                  );
+                }
+              }
+
               for (row of toPushToTable) {
                 table.push(row);
               }
@@ -103,4 +129,28 @@ https
   .on("error", (err) => {
     console.log("Error: " + err.message);
   });
+CFonts.say("you-elle", {
+  font: "block",
+  align: "left",
+  colors: ["system"],
+  background: "transparent",
+  letterSpacing: 1,
+  lineHeight: 1,
+  space: true,
+  maxLength: "0",
+  gradient: ["red", "#f80"],
+  independentGradient: false,
+  transitionGradient: false,
+  env: "node",
+});
+
 console.log(chalk.green("Welcome to you-elle, the UL course timetable cli"));
+
+function formatTableData(tableData) {
+  if (tableData == undefined || tableData == "") return "";
+
+  return tableData
+    .trim()
+    .substring(13)
+    .replace(/(.{30})/g, "$&" + "\n");
+}
