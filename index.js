@@ -107,7 +107,7 @@ https
                 "21:00",
                 "22:00",
               ];
-              for (let y = 0; y < tds.length; y += 6) {
+              for (let y = 0; y < tds.length; y += 12) {
                 for (let j = y; j < y + 6; j++) {
                   const index = Math.floor(y / 12);
                   toPushToTable[index][times[index]].push(
@@ -146,11 +146,12 @@ CFonts.say("you-elle", {
 
 console.log(chalk.green("Welcome to you-elle, the UL course timetable cli"));
 
-function formatTableData(tableData) {
-  if (tableData == undefined || tableData == "") return "";
+function formatTableData(tableData, y) {
+  if (tableData == undefined || tableData == "" || tableData.trim() == "")
+    return "";
 
   return tableData
     .trim()
     .substring(13)
-    .replace(/(.{30})/g, "$&" + "\n");
+    .replace(/(.{20})/g, "$&" + "\n");
 }
