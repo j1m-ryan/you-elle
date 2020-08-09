@@ -1,15 +1,12 @@
 {
-  "name": "you-elle",
-  "version": "1.0.1",
+  "name": "@j1m-ryan/you-elle",
+  "version": "1.1.0",
   "description": "A cli for UL timetables",
   "main": "bin/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/J1M-RYAN/you-elle.git"
-  },
+  "repository": "git://github.com/j1m-ryan/you-elle.git",
   "keywords": [
     "Timetable",
     "Limerick"
@@ -30,5 +27,8 @@
     "form-data": "^3.0.0",
     "inquirer": "^7.3.3",
     "jsdom": "^16.3.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   }
 }
