@@ -4,12 +4,14 @@ A nodejs cli for UL course timetables
 
 ![](images/program.gif)
 
-## Installation instructions
+## Installation
 
 This package can be installed from the NPM registry or installed after cloning or downloading the repo.
 
 To install from the npm registry run `npm i -g you-elle`  
 To install after cloning the repo run `npm i -g .`
+
+`you-elle` can also be used without installing  via `npx`  
 
 ## Usage
 
@@ -19,7 +21,9 @@ You can then select your year and course from the menus
 Alternatively you can specify year and course as command line arguments in the form `you-elle year course`  
 Eg: `you-elle 1 LM121`  
 The course must be the UL prefix  
-The year must be between 1 and 5
+The year must be between 1 and 5  
+
+To use the program without installing run `npx you-elle`
 
 ## Built With
 
@@ -27,7 +31,7 @@ The year must be between 1 and 5
 
 - [Inquirer.js](https://www.npmjs.com/package/inquirer) - For the interactive commands
 
-- [cli-table](https://www.npmjs.com/package/cli-table) - To from a table
+- [cli-table](https://www.npmjs.com/package/cli-table) - To form a table
 
 - [form-data](https://www.npmjs.com/package/form-data) - To send a request to the UL timetable web app
 
@@ -39,4 +43,4 @@ The year must be between 1 and 5
 
 ## Acknowledgments
 
-- This timetable pulls information [from this web app](https://www.timetable.ul.ie/UA/CourseTimetable.aspx)
+- The `you-elle` cli pulls information [from this web app](https://www.timetable.ul.ie/UA/CourseTimetable.aspx)
