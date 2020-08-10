@@ -39,4 +39,4 @@ The year must be between 1 and 5
 
 ## Acknowledgments
 
-- This timetable pulls information [from this web app](https://www.timetable.ul.ie/UA/CourseTimetable.aspx)
+- This timetable cli pulls information [from this web app](https://www.timetable.ul.ie/UA/CourseTimetable.aspx)
