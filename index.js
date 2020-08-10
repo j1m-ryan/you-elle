@@ -3,39 +3,21 @@ const https = require("https");
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const inquirer = require("inquirer");
-const chalk = require("chalk");
 const FormData = require("form-data");
-const CFonts = require("cfonts");
+const { yearIsValid, courseIsValid } = require("./utils/validators");
+const formatTableData = require("./utils/formatTableData");
 const Table = require("cli-table");
+const { days, times, toPushToTable } = require("./utils/days-and-times");
+const { output } = require("./utils/output");
+const questions = require("./utils/questions");
+const errorOut = require("./utils/error-out");
+const UL_COURSE_TIMETABLE_URL =
+  "https://www.timetable.ul.ie/UA/CourseTimetable.aspx";
 const table = new Table({
-  head: [
-    "",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ],
+  head: days,
 });
-CFonts.say("you-elle", {
-  font: "block",
-  align: "left",
-  colors: ["system"],
-  background: "transparent",
-  letterSpacing: 1,
-  lineHeight: 1,
-  space: true,
-  maxLength: "0",
-  gradient: ["red", "#f80"],
-  independentGradient: false,
-  transitionGradient: false,
-  env: "node",
-});
-
-console.log(chalk.green("Welcome to you-elle, the UL course timetable cli"));
-
-https.get("https://www.timetable.ul.ie/UA/CourseTimetable.aspx", (resp) => {
+output();
+https.get(UL_COURSE_TIMETABLE_URL, (resp) => {
   let data = "";
   resp.on("data", (chunk) => {
     data += chunk;
@@ -58,41 +40,18 @@ https.get("https://www.timetable.ul.ie/UA/CourseTimetable.aspx", (resp) => {
       if (yearIsValid(yearInputted) && courseIsValid(courseInputted, courses)) {
         answers = { year: yearInputted, course: courseInputted };
       } else {
-        console.log(
-          chalk.redBright(
-            "Enter a valid year between 1 and 5 & a valid course prefix"
-          )
-        );
-        console.log(chalk.greenBright("Example usage: you-elle 1 LM121"));
-        process.exit(1);
+        errorOut();
       }
     }
     if (process.argv.length == 2) {
-      let questions = [
-        {
-          type: "list",
-          name: "year",
-          message: "Which year are you in?",
-          choices: [1, 2, 3, 4, 5],
-        },
-        {
-          type: "list",
-          name: "course",
-          message: "Which course are you in?",
-          choices: courses,
-        },
-      ];
+      questions[1]["choices"] = courses;
       await inquirer
         .prompt(questions)
         .then((responses) => {
           answers = responses;
         })
         .catch((error) => {
-          if (error.isTtyError) {
-            // Prompt couldn't be rendered in the current environment
-          } else {
-            // Something else when wrong
-          }
+          console.error(error);
         });
     } else {
       answers = { year: yearInputted, course: courseInputted };
@@ -103,105 +62,34 @@ https.get("https://www.timetable.ul.ie/UA/CourseTimetable.aspx", (resp) => {
     form.append("__VIEWSTATEGENERATOR", generator);
     form.append("__EVENTVALIDATION", validation);
     form.append("ctl00$HeaderContent$CourseYearDropdown", answers["year"]);
-
     const start = answers["course"].length - 6;
     const end = answers["course"].length - 1;
-
     const courseCode =
       answers["course"].length <= 5
-        ? answers["course"]
+        ? answers["course"].toUpperCase()
         : answers["course"].substring(start, end);
     form.append("ctl00$HeaderContent$CourseDropdown", courseCode);
-    form.submit(
-      "https://www.timetable.ul.ie/UA/CourseTimetable.aspx",
-      (err, res) => {
-        let newData = "";
-        res.on("data", (d) => {
-          newData += d;
-        });
-
-        res.on("end", () => {
-          const dom2 = new JSDOM(newData);
-          const tds = dom2.window.document.getElementsByTagName("td");
-          const toPushToTable = [
-            {
-              "09:00": [],
-            },
-            { "10:00": [] },
-            { "11:00": [] },
-            { "12:00": [] },
-            { "13:00": [] },
-            { "14:00": [] },
-            { "15:00": [] },
-            { "16:00": [] },
-            { "17:00": [] },
-            { "18:00": [] },
-            { "19:00": [] },
-            { "20:00": [] },
-            { "21:00": [] },
-            { "22:00": [] },
-          ];
-          const times = [
-            "09:00",
-            "10:00",
-            "11:00",
-            "12:00",
-            "13:00",
-            "14:00",
-            "15:00",
-            "16:00",
-            "17:00",
-            "18:00",
-            "19:00",
-            "20:00",
-            "21:00",
-            "22:00",
-          ];
-          for (let y = 0; y < tds.length; y += 12) {
-            for (let j = y; j < y + 6; j++) {
-              const index = Math.floor(y / 12);
-              toPushToTable[index][times[index]].push(
-                formatTableData(tds[j].textContent)
-              );
-            }
+    form.submit(UL_COURSE_TIMETABLE_URL, (err, res) => {
+      let newData = "";
+      res.on("data", (d) => {
+        newData += d;
+      });
+      res.on("end", () => {
+        const dom2 = new JSDOM(newData);
+        const tds = dom2.window.document.getElementsByTagName("td");
+        for (let y = 0; y < tds.length; y += 12) {
+          for (let j = y; j < y + 6; j++) {
+            const index = Math.floor(y / 12);
+            toPushToTable[index][times[index]].push(
+              formatTableData(tds[j].textContent)
+            );
           }
-
-          for (row of toPushToTable) {
-            table.push(row);
-          }
-          console.log(table.toString());
-        });
-      }
-    );
+        }
+        for (row of toPushToTable) {
+          table.push(row);
+        }
+        console.log(table.toString());
+      });
+    });
   });
 });
-
-function formatTableData(tableData, y) {
-  if (tableData == undefined || tableData == "" || tableData.trim() == "")
-    return "";
-
-  return tableData
-    .trim()
-    .substring(13)
-    .replace(/(.{20})/g, "$&" + "\n");
-}
-
-//check if year is between 1 and 5
-function yearIsValid(year) {
-  if (!isInteger(year)) return false;
-  return parseInt(year) >= 1 && parseInt(year) <= 5;
-}
-function isInteger(str) {
-  const pattern = /^\d+$/;
-  return pattern.test(str);
-}
-function courseIsValid(course, courses) {
-  for (let i = 7; i < courses.length; i++) {
-    const c = courses[i];
-    const start = c.length - 6;
-    const end = c.length - 1;
-    if (c.substring(start, end).toLowerCase() === course.toLowerCase())
-      return true;
-  }
-  return false;
-}
