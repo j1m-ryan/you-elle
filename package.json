@@ -4,6 +4,7 @@
   "description": "A cli for UL timetables",
   "main": "bin/index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": "git://github.com/j1m-ryan/you-elle.git",

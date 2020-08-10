@@ -16,20 +16,28 @@ const UL_COURSE_TIMETABLE_URL =
 const table = new Table({
   head: days,
 });
+
+//print logo and welcome text
 output();
+
+//get the form as HTML
 https.get(UL_COURSE_TIMETABLE_URL, (resp) => {
-  let data = "";
+  let formAsHTML = "";
   resp.on("data", (chunk) => {
-    data += chunk;
+    formAsHTML += chunk;
   });
   resp.on("end", async () => {
-    const dom = new JSDOM(data);
-    const options = dom.window.document.getElementsByTagName("option");
-    const inputs = dom.window.document.getElementsByTagName("input");
+    // create dom from the HTML form page
+    const domOfHTMLForm = new JSDOM(formAsHTML);
+    const options = domOfHTMLForm.window.document.getElementsByTagName(
+      "option"
+    );
+    const inputs = domOfHTMLForm.window.document.getElementsByTagName("input");
     const state = inputs.item(0).value;
     const generator = inputs.item(1).value;
     const validation = inputs.item(2).value;
     const courses = [];
+    //the courses are <option> elements, however the first 7 <option> elements are not courses
     for (let i = 7; i < options.length; i++) {
       courses.push(options[i].textContent);
     }
@@ -38,7 +46,10 @@ https.get(UL_COURSE_TIMETABLE_URL, (resp) => {
     let answers = {};
     if (yearInputted != undefined && courseInputted != undefined) {
       if (yearIsValid(yearInputted) && courseIsValid(courseInputted, courses)) {
-        answers = { year: yearInputted, course: courseInputted };
+        answers = {
+          year: yearInputted,
+          course: courseInputted,
+        };
       } else {
         errorOut();
       }
@@ -54,9 +65,14 @@ https.get(UL_COURSE_TIMETABLE_URL, (resp) => {
           console.error(error);
         });
     } else {
-      answers = { year: yearInputted, course: courseInputted };
+      answers = {
+        year: yearInputted,
+        course: courseInputted,
+      };
     }
     const form = new FormData();
+    // the form requires a generator, validation token and a state. all of these are sent in the HTML response
+    // the form also requires a year and a course prefix
     form.append("__EVENTTARGET", "ctl00$HeaderContent$CourseDropdown");
     form.append("__VIEWSTATE", state);
     form.append("__VIEWSTATEGENERATOR", generator);
@@ -64,19 +80,25 @@ https.get(UL_COURSE_TIMETABLE_URL, (resp) => {
     form.append("ctl00$HeaderContent$CourseYearDropdown", answers["year"]);
     const start = answers["course"].length - 6;
     const end = answers["course"].length - 1;
+    //if the user inputted the couse as an argument uppercase the argument, otherwise they chose the full couse name from the drop down menu
+    //and the last 5 letters of full course are the prefix needed
     const courseCode =
       answers["course"].length <= 5
         ? answers["course"].toUpperCase()
         : answers["course"].substring(start, end);
     form.append("ctl00$HeaderContent$CourseDropdown", courseCode);
+    // submit the form and get a new html response
     form.submit(UL_COURSE_TIMETABLE_URL, (err, res) => {
-      let newData = "";
+      let timetabledata = "";
       res.on("data", (d) => {
-        newData += d;
+        timetabledata += d;
       });
       res.on("end", () => {
-        const dom2 = new JSDOM(newData);
-        const tds = dom2.window.document.getElementsByTagName("td");
+        // create a new dom when the new respsonse has finished
+        const timeTableDom = new JSDOM(timetabledata);
+        const tds = timeTableDom.window.document.getElementsByTagName("td");
+        //this new dom always has 162 table data elements
+        //every second row of 6 elements is empty
         for (let y = 0; y < tds.length; y += 12) {
           for (let j = y; j < y + 6; j++) {
             const index = Math.floor(y / 12);
@@ -85,9 +107,11 @@ https.get(UL_COURSE_TIMETABLE_URL, (resp) => {
             );
           }
         }
+        //create the table from the rows in "toPushToTable"
         for (row of toPushToTable) {
           table.push(row);
         }
+        //print the table
         console.log(table.toString());
       });
     });
