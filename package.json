@@ -1,6 +1,6 @@
 {
   "name": "@j1m-ryan/you-elle",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A cli for UL timetables",
   "main": "bin/index.js",
   "scripts": {
