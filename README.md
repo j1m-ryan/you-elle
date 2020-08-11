@@ -29,7 +29,7 @@ To use the program without installing run `npx you-elle`
 
 - [Node.js](https://nodejs.org/en/) - The runtime
 
-- [Inquirer.js](https://www.npmjs.com/package/inquirer) - For the interactive commands
+- [inquirer.js](https://www.npmjs.com/package/inquirer) - For the interactive commands
 
 - [cli-table3](https://www.npmjs.com/package/cli-table3) - To form a table
 
@@ -41,7 +41,9 @@ To use the program without installing run `npx you-elle`
 
 - [chalk](https://www.npmjs.com/package/chalk) - To color some of the text  
 
-- [eslint](https://www.npmjs.com/package/eslint) - The Google javascript coding style is used for this project
+- [eslint](https://www.npmjs.com/package/eslint) - The Google javascript coding style is used for this project  
+
+- [jest](https://www.npmjs.com/package/jest) - Is used for the unit tests
 
 ## Acknowledgments
 
