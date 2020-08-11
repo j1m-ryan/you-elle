@@ -5,7 +5,8 @@
   "main": "bin/index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest .",
+    "lint": "eslint utils --fix && eslint index.js --fix && eslint tests --fix"
   },
   "repository": "git://github.com/j1m-ryan/you-elle.git",
   "keywords": [
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "eslint": "^7.6.0",
-    "eslint-config-google": "^0.14.0"
+    "eslint-config-google": "^0.14.0",
+    "jest": "^26.3.0"
   }
 }
