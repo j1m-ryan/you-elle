@@ -41,6 +41,8 @@ To use the program without installing run `npx you-elle`
 
 - [chalk](https://www.npmjs.com/package/chalk) - To color some of the text  
 
+## Dev Dependencies
+
 - [eslint](https://www.npmjs.com/package/eslint) - The Google javascript coding style is used for this project  
 
 - [jest](https://www.npmjs.com/package/jest) - Is used for the unit tests
