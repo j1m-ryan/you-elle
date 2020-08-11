@@ -1,7 +1,7 @@
 {
   "name": "@j1m-ryan/you-elle",
   "version": "1.1.1",
-  "description": "A cli for UL timetables",
+  "description": "A cli for University of Limerick course timetables",
   "main": "bin/index.js",
   "scripts": {
     "start": "node index.js",
@@ -9,8 +9,11 @@
   },
   "repository": "git://github.com/j1m-ryan/you-elle.git",
   "keywords": [
-    "Timetable",
-    "Limerick"
+    "timetable",
+    "university",
+    "limerick",
+    "cli",
+    "student"
   ],
   "author": "Jim Ryan",
   "license": "MIT",
