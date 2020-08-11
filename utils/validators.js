@@ -11,10 +11,11 @@ const courseIsValid = (course, courses) => {
     const c = courses[i];
     const start = c.length - 6;
     const end = c.length - 1;
-    if (c.substring(start, end).toLowerCase() === course.toLowerCase())
+    if (c.substring(start, end).toLowerCase() === course.toLowerCase()) {
       return true;
+    }
   }
   return false;
 };
 
-module.exports = { yearIsValid, courseIsValid };
+module.exports = {yearIsValid, courseIsValid};
