@@ -31,7 +31,7 @@ To use the program without installing run `npx you-elle`
 
 - [Inquirer.js](https://www.npmjs.com/package/inquirer) - For the interactive commands
 
-- [cli-table](https://www.npmjs.com/package/cli-table) - To form a table
+- [cli-table3](https://www.npmjs.com/package/cli-table3) - To form a table
 
 - [form-data](https://www.npmjs.com/package/form-data) - To send a request to the UL timetable web app
 
@@ -39,7 +39,9 @@ To use the program without installing run `npx you-elle`
 
 - [cfonts](https://www.npmjs.com/package/cfonts) - The fancy you-elle front
 
-- [chalk](https://www.npmjs.com/package/chalk) - To color some of the text
+- [chalk](https://www.npmjs.com/package/chalk) - To color some of the text  
+
+- [eslint](https://www.npmjs.com/package/eslint) - The Google javascript coding style is used for this project
 
 ## Acknowledgments
 
