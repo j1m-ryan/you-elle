@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "jest .",
-    "lint": "eslint utils --fix && eslint index.js --fix && eslint tests --fix"
+    "lint": "eslint utils --fix && eslint index.js --fix && eslint tests --fix && eslint src --fix"
   },
   "repository": "git://github.com/j1m-ryan/you-elle.git",
   "keywords": [
