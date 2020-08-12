@@ -1,4 +1,4 @@
-# you-elle
+# :spiral_calendar: you-elle
  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
  ![Dependencies](https://img.shields.io/david/J1M-RYAN/you-elle)
  ![npm](https://img.shields.io/npm/v/you-elle)
@@ -7,7 +7,7 @@ A nodejs cli for University of Limerick course timetables
 
 ![](images/program.gif)
 
-## Installation
+## :computer: Installation
 
 This package can be installed from the NPM registry or installed after cloning or downloading the repo.
 
@@ -16,7 +16,7 @@ To install after cloning the repo run `npm i -g .`
 
 `you-elle` can also be used without installing  via `npx`  
 
-## Usage
+## :keyboard: Usage
 
 To use the program run the command `you-elle`  
 You can then select your year and course from the menus
@@ -28,7 +28,7 @@ The year must be between 1 and 5
 
 To use the program without installing run `npx you-elle`
 
-## Built With
+## :hammer: Built With
 
 - [Node.js](https://nodejs.org/en/) - The runtime
 
@@ -44,12 +44,12 @@ To use the program without installing run `npx you-elle`
 
 - [chalk](https://www.npmjs.com/package/chalk) - To color some of the text  
 
-## Dev Dependencies
+## :construction_worker_man: Dev Dependencies
 
 - [eslint](https://www.npmjs.com/package/eslint) - The Google javascript coding style is used for this project  
 
 - [jest](https://www.npmjs.com/package/jest) - Is used for the unit tests
 
-## Acknowledgments
+## :speaking_head: Acknowledgments
 
 - The `you-elle` cli pulls information [from this web app](https://www.timetable.ul.ie/UA/CourseTimetable.aspx)
