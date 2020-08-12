@@ -2,6 +2,7 @@
  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
  ![Dependencies](https://img.shields.io/david/J1M-RYAN/you-elle)
  ![npm](https://img.shields.io/npm/v/you-elle)
+ ![vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/you-elle)
  ![last commit](https://img.shields.io/github/last-commit/j1m-ryan/you-elle/master)  
 A nodejs cli for University of Limerick course timetables
 
