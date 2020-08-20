@@ -4,7 +4,7 @@
  ![npm](https://img.shields.io/npm/v/you-elle)
  ![vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/you-elle)
  ![last commit](https://img.shields.io/github/last-commit/j1m-ryan/you-elle/master)  
-A nodejs cli for University of Limerick course timetables. ![View on npm](https://www.npmjs.com/package/you-elle)  
+A nodejs cli for University of Limerick course timetables. [View on npm](https://www.npmjs.com/package/you-elle)  
 
 
 ![](images/program.gif)  
